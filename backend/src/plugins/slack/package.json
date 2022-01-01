@@ -1,0 +1,24 @@
+{
+  "name": "slack",
+  "version": "0.0.0",
+  "description": "Allows to send notifications from Strapi to Slack channels",
+  "strapi": {
+    "name": "Slack",
+    "description": "Allows to send notifications to Slack channels",
+    "kind": "plugin"
+  },
+  "dependencies": {},
+  "author": {
+    "name": "Wietse Neven"
+  },
+  "maintainers": [
+    {
+      "name": "Wietse Neven"
+    }
+  ],
+  "engines": {
+    "node": ">=12.x. <=16.x.x",
+    "npm": ">=6.0.0"
+  },
+  "license": "MIT"
+}
