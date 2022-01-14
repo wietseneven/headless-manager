@@ -48,7 +48,7 @@ const AppCard = ({ id, app }: Props) => {
       .catch((error) => {
         logger.error(error);
       });
-  }, []);
+  }, [id]);
 
   return (
     <Card variant="outlined">
@@ -71,7 +71,9 @@ const AppCard = ({ id, app }: Props) => {
             <TableBody>
               {messages.data.map((message) => (
                 <TableRow key={message.id}>
-                  <TableCell size="small" padding="none">{message.attributes.level}</TableCell>
+                  <TableCell size="small" padding="none">
+                    {message.attributes.level}
+                  </TableCell>
                   <TableCell
                     sx={{
                       whiteSpace: 'nowrap',

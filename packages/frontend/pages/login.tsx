@@ -16,18 +16,21 @@ const LoginPage = () => {
   const router = useRouter();
   const { handleSubmit, register } = useForm();
 
-  const handleLogin = useCallback(async (data) => {
-    const response = await fetchAPI(
-      '/auth/local',
-      {},
-      {
-        method: 'POST',
-        body: JSON.stringify(data),
-      }
-    );
-    Cookies.set(JWT_COOKIE_KEY, response.jwt);
-    await router.push('/');
-  }, []);
+  const handleLogin = useCallback(
+    async (data) => {
+      const response = await fetchAPI(
+        '/auth/local',
+        {},
+        {
+          method: 'POST',
+          body: JSON.stringify(data),
+        }
+      );
+      Cookies.set(JWT_COOKIE_KEY, response.jwt);
+      await router.push('/');
+    },
+    [router]
+  );
 
   return (
     <Card
