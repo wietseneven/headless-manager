@@ -1,4 +1,4 @@
-import Logger from '../../client';
+import Logger from 'headless-manager-client';
 import { APP_KEY } from './constants';
 
 const logger = new Logger({
