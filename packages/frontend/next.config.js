@@ -1,11 +1,13 @@
 /**
  * @type {import('next').NextConfig}
  */
-const nextConfig = {
-  images: {
-    loader: "default",
-    domains: ["localhost"],
-  },
-}
+const withTM = require('next-transpile-modules')(['client']); // pass the modules you would like to see transpiled
 
-module.exports = nextConfig
+const nextConfig = withTM({
+  images: {
+    loader: 'default',
+    domains: ['localhost'],
+  },
+});
+
+module.exports = nextConfig;

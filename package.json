@@ -14,5 +14,6 @@
   },
   "dependencies": {
     "strapi-to-typescript": "https://github.com/timohofmeijer/strapi-to-typescript#strapi-4-support"
-  }
+  },
+  "workspaces": ["packages/backend", "packages/client", "packages/frontend"]
 }
