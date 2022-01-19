@@ -1,5 +1,5 @@
 import qs from 'qs';
-import { API_KEY, JWT_COOKIE_KEY } from './constants';
+import { API_KEY, API_URL, JWT_COOKIE_KEY } from './constants';
 import Cookies from 'js-cookie';
 import logger from './logger';
 
@@ -9,9 +9,7 @@ import logger from './logger';
  * @returns {string} Full Strapi URL
  */
 export function getStrapiURL(path = '') {
-  return `${
-    process.env.NEXT_PUBLIC_STRAPI_API_URL || 'http://localhost:1337'
-  }${path}`;
+  return `${API_URL}${path}`;
 }
 
 /**
@@ -46,7 +44,6 @@ export async function fetchAPI(path, urlParamsObject = {}, options = {}) {
   // Handle response
   if (!response.ok) {
     console.error(response.statusText);
-    console.log(response.text());
     logger.error(`Failed to fetch`, requestUrl);
     throw new Error(`An error occured please try again`);
   }

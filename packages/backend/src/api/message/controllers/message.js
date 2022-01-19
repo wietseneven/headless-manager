@@ -25,6 +25,6 @@ module.exports = createCoreController('api::message.message', ({ strapi }) =>  (
       },
       populate: ['app']
     });
-    return { data: { ...entry }, meta: {} };
+    return { data: { id: entry.id }, meta: {} };
   }
 }));

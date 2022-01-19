@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "vitals",
+  "info": {
+    "singularName": "vital",
+    "pluralName": "vitals",
+    "displayName": "Vital",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nextId": {
+      "type": "string"
+    },
+    "startTime": {
+      "type": "float"
+    },
+    "value": {
+      "type": "float"
+    },
+    "label": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "app": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::app.app",
+      "inversedBy": "vitals"
+    }
+  }
+}

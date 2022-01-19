@@ -1,6 +1,6 @@
 {
   "name": "headless-manager-client",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Client to submit logs and events to the Headless Manager",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -43,7 +43,5 @@
   "files": [
     "dist/**/*"
   ],
-  "dependencies": {
-    "axios": "^0.24.0"
-  }
+  "dependencies": {}
 }

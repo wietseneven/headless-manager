@@ -1,9 +1,6 @@
-import App from 'next/app';
-import Head from 'next/head';
+import { NextWebVitalsMetric } from 'next/app';
 import '../assets/css/style.css';
 import { createContext } from 'react';
-import { fetchAPI } from '../lib/api';
-import { getStrapiMedia } from '../lib/media';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { AppProps } from 'next/app';
 import { ThemeProvider } from '@mui/material/styles';
@@ -11,6 +8,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 import theme from '../styles/theme';
 import createEmotionCache from '../utils/createEmotionCache';
+import logger from '../lib/logger';
+import { APP_KEY } from '../lib/constants';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -20,6 +19,11 @@ export const GlobalContext = createContext({});
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
+}
+
+export function reportWebVitals(metric: NextWebVitalsMetric) {
+  logger.vital(metric);
+  logger.silly('bier');
 }
 
 const MyApp = ({

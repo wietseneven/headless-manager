@@ -44,6 +44,12 @@
     },
     "repository": {
       "type": "string"
+    },
+    "vitals": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::vital.vital",
+      "mappedBy": "app"
     }
   }
 }
