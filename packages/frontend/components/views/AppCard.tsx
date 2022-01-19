@@ -85,8 +85,12 @@ const AppCard = ({ id, app }: Props) => {
                       'dd-MM-yy kk:mm:ss'
                     )}
                   </TableCell>
-                  <TableCell sx={{ paddingRight: 0 }}>{message.attributes.label}</TableCell>
-                  <TableCell sx={{ paddingRight: 0, width: '100%' }}>{message.attributes.message}</TableCell>
+                  <TableCell sx={{ paddingRight: 0 }}>
+                    {message.attributes.label}
+                  </TableCell>
+                  <TableCell sx={{ paddingRight: 0, width: '100%' }}>
+                    {message.attributes.message}
+                  </TableCell>
                 </TableRow>
               ))}
               {!messages.loading && !messages.data.length && (
