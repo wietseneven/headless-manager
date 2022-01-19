@@ -13,7 +13,7 @@ exports.Logger = void 0;
 class Logger {
     constructor(options) {
         this.doFetch = (route, body) => __awaiter(this, void 0, void 0, function* () {
-            const url = `${this.baseUrl}/api/${route}`;
+            const url = `${this.labelUrl}/api/${route}`;
             const data = Object.assign(Object.assign({}, body), { app: this.appId, createdAt: new Date() });
             try {
                 if (navigator.sendBeacon) {
@@ -31,16 +31,16 @@ class Logger {
             }
             catch (e) {
                 if (this.isDev)
-                    Logger.print('error', e);
+                    Logger.print('error', 'doFetch', e);
             }
         });
-        this.error = (...messages) => this.log('error', ...messages);
-        this.warn = (...messages) => this.log('warn', ...messages);
-        this.info = (...messages) => this.log('info', ...messages);
-        this.http = (...messages) => this.log('http', ...messages);
-        this.verbose = (...messages) => this.log('verbose', ...messages);
-        this.debug = (...messages) => this.log('debug', ...messages);
-        this.silly = (...messages) => this.log('silly', ...messages);
+        this.error = (label, ...messages) => this.log('error', label, ...messages);
+        this.warn = (label, ...messages) => this.log('warn', label, ...messages);
+        this.info = (label, ...messages) => this.log('info', label, ...messages);
+        this.http = (label, ...messages) => this.log('http', label, ...messages);
+        this.verbose = (label, ...messages) => this.log('verbose', label, ...messages);
+        this.debug = (label, ...messages) => this.log('debug', label, ...messages);
+        this.silly = (label, ...messages) => this.log('silly', label, ...messages);
         this.vital = (vital) => this.sendVital(vital);
         if (!options.appId && options.submitEnabled) {
             throw new Error('No appId provided!');
@@ -53,38 +53,39 @@ class Logger {
             : false;
         this.submitEnabled = options.appId && options.submitEnabled ? options.submitEnabled : false;
         this.appId = options.appId;
-        this.baseUrl = options.apiUrl || 'http://localhost:1337';
+        this.labelUrl = options.apiUrl || 'http://localhost:1337';
         const globalFetch = (typeof window !== 'undefined') ? fetch : global.fetch;
         this.fetchInstance = options.fetchInstance || globalFetch;
     }
-    static print(level, ...messages) {
+    static print(level, label, ...messages) {
         switch (level) {
             case 'info':
-                console.info('%c Info:', 'background: blue; color: white;', ...messages);
+                console.info(`%c Info [${label}]:`, 'background: blue; color: white;', ...messages);
                 break;
             case 'warn':
-                console.warn('%c Warning:', 'background: orange; color: white;', ...messages);
+                console.warn(`%c Warning [${label}]:`, 'background: orange; color: white;', ...messages);
                 break;
             case 'error':
-                console.error('%c Error:', 'background: red; color: white;', ...messages);
+                console.error(`%c Error: [${label}]`, 'background: red; color: white;', ...messages);
                 break;
             case 'debug':
             default:
-                console.log(`%c ${level}:`, 'background: green; color: white;', ...messages);
+                console.log(`%c ${level} [${label}]:`, 'background: green; color: white;', ...messages);
         }
     }
-    submit(level, ...messages) {
+    submit(level, label, ...messages) {
         const data = {
             level,
+            label,
             message: messages.join(', '),
         };
         this.doFetch('messages', data);
     }
-    log(level, ...messages) {
+    log(level, label, ...messages) {
         if (this.clientEnabled)
-            Logger.print(level, ...messages);
+            Logger.print(level, label, ...messages);
         if (this.submitEnabled)
-            this.submit(level, ...messages);
+            this.submit(level, label, ...messages);
     }
     sendVital(vital) {
         if (!this.submitEnabled)

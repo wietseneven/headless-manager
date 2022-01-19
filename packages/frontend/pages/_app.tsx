@@ -22,6 +22,7 @@ interface MyAppProps extends AppProps {
 
 export function reportWebVitals(metric: NextWebVitalsMetric) {
   const { origin, pathname } = window.location;
+  logger.silly('test', 'here we are');
   logger.vital({ ...metric, origin, pathname });
 }
 

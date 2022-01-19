@@ -35,7 +35,7 @@ export class Logger {
   clientEnabled: boolean;
   submitEnabled: boolean;
   fetchInstance: Fetch;
-  baseUrl: string;
+  labelUrl: string;
 
   constructor(options: LOGGER_OPTIONS) {
     if (!options.appId && options.submitEnabled) {
@@ -49,30 +49,30 @@ export class Logger {
       : false;
     this.submitEnabled = options.appId && options.submitEnabled ? options.submitEnabled : false;
     this.appId = options.appId;
-    this.baseUrl = options.apiUrl || 'http://localhost:1337';
+    this.labelUrl = options.apiUrl || 'http://localhost:1337';
     const globalFetch = (typeof window !== 'undefined') ? fetch : global.fetch;
     this.fetchInstance = options.fetchInstance || globalFetch;
   }
 
-  private static print(level: LOG_LEVEL, ...messages: MESSAGES | unknown[]) {
+  private static print(level: LOG_LEVEL, label: string, ...messages: MESSAGES | unknown[]) {
     switch (level) {
       case 'info':
-        console.info('%c Info:', 'background: blue; color: white;', ...messages);
+        console.info(`%c Info [${label}]:`, 'background: blue; color: white;', ...messages);
         break;
       case 'warn':
-        console.warn('%c Warning:', 'background: orange; color: white;', ...messages);
+        console.warn(`%c Warning [${label}]:`, 'background: orange; color: white;', ...messages);
         break;
       case 'error':
-        console.error('%c Error:', 'background: red; color: white;', ...messages);
+        console.error(`%c Error: [${label}]`, 'background: red; color: white;', ...messages);
         break;
       case 'debug':
       default:
-        console.log(`%c ${level}:`, 'background: green; color: white;', ...messages);
+        console.log(`%c ${level} [${label}]:`, 'background: green; color: white;', ...messages);
     }
   }
 
   private doFetch = async (route: 'messages' | 'vitals', body: any) => {
-    const url = `${this.baseUrl}/api/${route}`;
+    const url = `${this.labelUrl}/api/${route}`;
     const data = {
       ...body,
       app: this.appId,
@@ -95,21 +95,22 @@ export class Logger {
         })
       }
     } catch (e) {
-      if (this.isDev) Logger.print('error', e);
+      if (this.isDev) Logger.print('error', 'doFetch', e);
     }
   }
 
-  private submit(level: LOG_LEVEL, ...messages: MESSAGES) {
+  private submit(level: LOG_LEVEL, label: string, ...messages: MESSAGES) {
     const data = {
       level,
+      label,
       message: messages.join(', '),
     };
     this.doFetch('messages', data);
   }
 
-  private log(level: LOG_LEVEL, ...messages: MESSAGES) {
-    if (this.clientEnabled) Logger.print(level, ...messages);
-    if (this.submitEnabled) this.submit(level, ...messages);
+  private log(level: LOG_LEVEL, label: string, ...messages: MESSAGES) {
+    if (this.clientEnabled) Logger.print(level, label, ...messages);
+    if (this.submitEnabled) this.submit(level, label, ...messages);
   }
 
   private sendVital(vital: VitalData) {
@@ -126,13 +127,13 @@ export class Logger {
     this.doFetch('vitals', data);
   }
 
-  error = (...messages: MESSAGES) => this.log('error', ...messages);
-  warn = (...messages: MESSAGES) => this.log('warn', ...messages);
-  info = (...messages: MESSAGES) => this.log('info', ...messages);
-  http = (...messages: MESSAGES) => this.log('http', ...messages);
-  verbose = (...messages: MESSAGES) => this.log('verbose', ...messages);
-  debug = (...messages: MESSAGES) => this.log('debug', ...messages);
-  silly = (...messages: MESSAGES) => this.log('silly', ...messages);
+  error = (label: string, ...messages: MESSAGES) => this.log('error', label, ...messages);
+  warn = (label: string, ...messages: MESSAGES) => this.log('warn', label, ...messages);
+  info = (label: string, ...messages: MESSAGES) => this.log('info', label, ...messages);
+  http = (label: string, ...messages: MESSAGES) => this.log('http', label, ...messages);
+  verbose = (label: string, ...messages: MESSAGES) => this.log('verbose', label, ...messages);
+  debug = (label: string, ...messages: MESSAGES) => this.log('debug', label, ...messages);
+  silly = (label: string, ...messages: MESSAGES) => this.log('silly', label, ...messages);
 
   vital = (vital: VitalData) => this.sendVital(vital);
 }

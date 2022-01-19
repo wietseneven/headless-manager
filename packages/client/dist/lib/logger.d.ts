@@ -29,20 +29,20 @@ export declare class Logger {
     clientEnabled: boolean;
     submitEnabled: boolean;
     fetchInstance: Fetch;
-    baseUrl: string;
+    labelUrl: string;
     constructor(options: LOGGER_OPTIONS);
     private static print;
     private doFetch;
     private submit;
     private log;
     private sendVital;
-    error: (...messages: MESSAGES) => void;
-    warn: (...messages: MESSAGES) => void;
-    info: (...messages: MESSAGES) => void;
-    http: (...messages: MESSAGES) => void;
-    verbose: (...messages: MESSAGES) => void;
-    debug: (...messages: MESSAGES) => void;
-    silly: (...messages: MESSAGES) => void;
+    error: (label: string, ...messages: MESSAGES) => void;
+    warn: (label: string, ...messages: MESSAGES) => void;
+    info: (label: string, ...messages: MESSAGES) => void;
+    http: (label: string, ...messages: MESSAGES) => void;
+    verbose: (label: string, ...messages: MESSAGES) => void;
+    debug: (label: string, ...messages: MESSAGES) => void;
+    silly: (label: string, ...messages: MESSAGES) => void;
     vital: (vital: VitalData) => void;
 }
 export {};

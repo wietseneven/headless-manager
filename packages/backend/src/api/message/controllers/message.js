@@ -19,6 +19,7 @@ module.exports = createCoreController('api::message.message', ({ strapi }) =>  (
     const entry = await strapi.entityService.create('api::message.message', {
       data: {
         level: data.level,
+        label: data.label,
         message: data.message,
         app: app.id,
         ip: data.ip,
