@@ -4,7 +4,6 @@ import { fetchAPI } from '../lib/api';
 import { Container, Typography } from '@mui/material';
 import { IApp } from '../../../types';
 import AppCard from '@components/views/AppCard';
-import logger from '../lib/logger';
 
 interface App {
   id: string;
@@ -19,7 +18,7 @@ const Home = ({ apps }: Props) => {
   return (
     <Layout>
       {/*<Seo seo={homepage.attributes.seo} />*/}
-      <Container>
+      <Container sx={{ pt: 2 }}>
         <Typography gutterBottom variant="h1">
           Apps
         </Typography>

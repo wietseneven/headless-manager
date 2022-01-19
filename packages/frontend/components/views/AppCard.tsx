@@ -51,7 +51,7 @@ const AppCard = ({ id, app }: Props) => {
   }, [id]);
 
   return (
-    <Card variant="outlined">
+    <Card variant="outlined" sx={{ mb: 2 }}>
       <CardContent>
         <Typography gutterBottom variant="h2">
           {app.name}
@@ -71,11 +71,12 @@ const AppCard = ({ id, app }: Props) => {
             <TableBody>
               {messages.data.map((message) => (
                 <TableRow key={message.id}>
-                  <TableCell size="small" padding="none">
+                  <TableCell sx={{ paddingRight: 0 }}>
                     {message.attributes.level}
                   </TableCell>
                   <TableCell
                     sx={{
+                      paddingRight: 0,
                       whiteSpace: 'nowrap',
                     }}
                   >
@@ -84,7 +85,8 @@ const AppCard = ({ id, app }: Props) => {
                       'dd-MM-yy kk:mm:ss'
                     )}
                   </TableCell>
-                  <TableCell>{message.attributes.message}</TableCell>
+                  <TableCell sx={{ paddingRight: 0 }}>{message.attributes.label}</TableCell>
+                  <TableCell sx={{ paddingRight: 0, width: '100%' }}>{message.attributes.message}</TableCell>
                 </TableRow>
               ))}
               {!messages.loading && !messages.data.length && (
