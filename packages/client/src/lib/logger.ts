@@ -13,6 +13,11 @@ type VitalsMetric = {
   name: 'Next.js-hydration' | 'Next.js-route-change-to-render' | 'Next.js-render';
 });
 
+type VitalData = VitalsMetric & {
+  origin?: string;
+  pathname?: string;
+}
+
 type Fetch = (input: RequestInfo, init?: RequestInit) => Promise<Response>;
 
 interface LOGGER_OPTIONS {
@@ -107,7 +112,7 @@ export class Logger {
     if (this.submitEnabled) this.submit(level, ...messages);
   }
 
-  private sendVital(vital: VitalsMetric) {
+  private sendVital(vital: VitalData) {
     if (!this.submitEnabled) return;
     const data = {
       nextId: vital.id,
@@ -115,6 +120,8 @@ export class Logger {
       value: vital.value,
       label: vital.label,
       name: vital.name,
+      pathname: vital.pathname,
+      origin: vital.origin,
     }
     this.doFetch('vitals', data);
   }
@@ -127,5 +134,5 @@ export class Logger {
   debug = (...messages: MESSAGES) => this.log('debug', ...messages);
   silly = (...messages: MESSAGES) => this.log('silly', ...messages);
 
-  vital = (vital: VitalsMetric) => this.sendVital(vital);
+  vital = (vital: VitalData) => this.sendVital(vital);
 }

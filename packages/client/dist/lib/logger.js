@@ -95,6 +95,8 @@ class Logger {
             value: vital.value,
             label: vital.label,
             name: vital.name,
+            pathname: vital.pathname,
+            origin: vital.origin,
         };
         this.doFetch('vitals', data);
     }

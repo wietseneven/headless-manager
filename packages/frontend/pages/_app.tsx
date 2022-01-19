@@ -9,7 +9,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import theme from '../styles/theme';
 import createEmotionCache from '../utils/createEmotionCache';
 import logger from '../lib/logger';
-import { APP_KEY } from '../lib/constants';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -22,8 +21,8 @@ interface MyAppProps extends AppProps {
 }
 
 export function reportWebVitals(metric: NextWebVitalsMetric) {
-  logger.vital(metric);
-  logger.silly('bier');
+  const { origin, pathname } = window.location;
+  logger.vital({ ...metric, origin, pathname });
 }
 
 const MyApp = ({

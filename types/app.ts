@@ -1,5 +1,6 @@
 import { IClient } from './client';
 import { IMessage } from './message';
+import { IVital } from './vital';
 
 /**
  * Model definition for App
@@ -14,4 +15,5 @@ export interface IApp {
   channel?: string;
   fathomSiteId?: string;
   repository?: string;
+  vitals?: IVital[];
 }

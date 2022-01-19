@@ -1,14 +1,15 @@
 {
   "dependencies": {
-    "@strapi/plugin-graphql": "^4.0.4",
-    "@strapi/plugin-i18n": "4.0.4",
-    "@strapi/plugin-users-permissions": "4.0.4",
-    "@strapi/strapi": "4.0.4",
+    "@strapi/plugin-graphql": "^4.0.5",
+    "@strapi/plugin-i18n": "4.0.5",
+    "@strapi/plugin-users-permissions": "4.0.5",
+    "@strapi/strapi": "4.0.5",
     "add": "^2.0.6",
     "lodash.set": "^4.3.2",
     "mime-types": "^2.1.27",
     "sqlite3": "5.0.2",
     "strapi-plugin-socket-io": "^3.0.1",
+    "strapi-to-typescript": "https://github.com/timohofmeijer/strapi-to-typescript#strapi-4-support",
     "yarn": "^1.22.17"
   },
   "name": "backend",

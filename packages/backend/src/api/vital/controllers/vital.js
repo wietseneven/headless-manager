@@ -20,6 +20,8 @@ module.exports = createCoreController('api::vital.vital', ({ strapi }) =>  ({
         value: data.value,
         label: data.label,
         name: data.name,
+        origin: data.origin,
+        pathname: data.pathname,
         app: app.id,
       },
     });

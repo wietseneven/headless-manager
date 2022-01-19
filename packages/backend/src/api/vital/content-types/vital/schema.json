@@ -32,6 +32,12 @@
       "relation": "manyToOne",
       "target": "api::app.app",
       "inversedBy": "vitals"
+    },
+    "origin": {
+      "type": "string"
+    },
+    "pathname": {
+      "type": "string"
     }
   }
 }

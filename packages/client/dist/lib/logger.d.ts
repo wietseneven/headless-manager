@@ -10,6 +10,10 @@ declare type VitalsMetric = {
     label: 'custom';
     name: 'Next.js-hydration' | 'Next.js-route-change-to-render' | 'Next.js-render';
 });
+declare type VitalData = VitalsMetric & {
+    origin?: string;
+    pathname?: string;
+};
 declare type Fetch = (input: RequestInfo, init?: RequestInit) => Promise<Response>;
 interface LOGGER_OPTIONS {
     appId: string;
@@ -39,6 +43,6 @@ export declare class Logger {
     verbose: (...messages: MESSAGES) => void;
     debug: (...messages: MESSAGES) => void;
     silly: (...messages: MESSAGES) => void;
-    vital: (vital: VitalsMetric) => void;
+    vital: (vital: VitalData) => void;
 }
 export {};
