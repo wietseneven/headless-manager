@@ -16,7 +16,7 @@ module.exports = createCoreController('api::message.message', ({ strapi }) =>  (
         return ctx.badRequest('ip is missing!')
     }
 
-    const entry = await strapi.entityService.create('api::message.message', {
+    await strapi.entityService.create('api::message.message', {
       data: {
         level: data.level,
         label: data.label,
@@ -26,6 +26,7 @@ module.exports = createCoreController('api::message.message', ({ strapi }) =>  (
       },
       populate: ['app']
     });
-    return { data: { id: entry.id }, meta: {} };
+    // We don't want to send a response body, just a success
+    ctx.response.status = 200;
   }
 }));

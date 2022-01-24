@@ -26,11 +26,12 @@
     "qs": "^6.10.3",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-hook-form": "^7.24.1"
+    "react-hook-form": "^7.25.0",
+    "strapi-to-typescript": "https://github.com/timohofmeijer/strapi-to-typescript#strapi-4-support"
   },
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.16.10",
+    "@babel/core": "^7.16.12",
     "@emotion/styled": "^11.6.0",
     "@types/js-cookie": "^3.0.1",
     "@typescript-eslint/parser": "^5.10.0",
@@ -39,6 +40,6 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "prettier": "^2.5.1",
-    "typescript": "^4.5.4"
+    "typescript": "^4.5.5"
   }
 }

@@ -7,6 +7,7 @@
     "add": "^2.0.6",
     "lodash.set": "^4.3.2",
     "mime-types": "^2.1.27",
+    "mysql": "^2.18.1",
     "sqlite3": "5.0.2",
     "strapi-plugin-socket-io": "^3.0.1",
     "strapi-to-typescript": "https://github.com/timohofmeijer/strapi-to-typescript#strapi-4-support",
@@ -22,7 +23,9 @@
     "build": "strapi build",
     "strapi": "strapi"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.16.5"
+  },
   "author": {
     "name": "Wietse Neven"
   },

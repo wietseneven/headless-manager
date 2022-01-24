@@ -50,7 +50,7 @@ export class Logger {
     this.submitEnabled = options.appId && options.submitEnabled ? options.submitEnabled : false;
     this.appId = options.appId;
     this.labelUrl = options.apiUrl || 'http://localhost:1337';
-    const globalFetch = (typeof window !== 'undefined') ? fetch : global.fetch;
+    const globalFetch = (typeof window !== 'undefined' && typeof fetch !== 'undefined') ? fetch : global.fetch;
     this.fetchInstance = options.fetchInstance || globalFetch;
   }
 
@@ -80,13 +80,13 @@ export class Logger {
     }
 
     try {
-      if (navigator.sendBeacon) {
+      if (typeof navigator !== 'undefined' && navigator?.sendBeacon) {
         navigator.sendBeacon(
           url,
           JSON.stringify({ data })
         );
       } else {
-        await fetch(url, {
+        await this.fetchInstance(url, {
           method: 'POST',
           headers: {
             'content-type': 'application/json',

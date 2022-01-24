@@ -28,7 +28,7 @@ export async function middleware(req: NextRequest, res: NextResponse) {
   const { pathname } = req.nextUrl;
   const isLogin = pathname.includes('/login');
 
-  const protectedRoutes = ['/', '/login'];
+  const protectedRoutes = ['/', '/apps', '/login'];
 
   if (!protectedRoutes.includes(pathname)) {
     return NextResponse.next();

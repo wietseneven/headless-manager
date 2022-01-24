@@ -16,7 +16,7 @@ class Logger {
             const url = `${this.labelUrl}/api/${route}`;
             const data = Object.assign(Object.assign({}, body), { app: this.appId, createdAt: new Date() });
             try {
-                if (navigator.sendBeacon) {
+                if (typeof navigator !== 'undefined' && (navigator === null || navigator === void 0 ? void 0 : navigator.sendBeacon)) {
                     navigator.sendBeacon(url, JSON.stringify({ data }));
                 }
                 else {
