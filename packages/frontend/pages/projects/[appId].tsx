@@ -13,7 +13,7 @@ import Link from 'next/link';
 
 interface App {
   id: string;
-  attributes: IApp & {
+  attributes?: IApp & {
     client: {
       data: {
         id: number;
@@ -32,8 +32,8 @@ interface Props {
 }
 
 const Project = ({ app }: Props) => {
-  const title = app.attributes.name || 'App';
-  const { client } = app.attributes;
+  const title = app.attributes?.name || 'App';
+  const client = app.attributes?.client;
   return (
     <Layout title={title}>
       {/*<Seo seo={homepage.attributes.seo} />*/}
@@ -44,9 +44,9 @@ const Project = ({ app }: Props) => {
               Projects
             </MuiLink>
           </Link>
-          <Link href={`/clients/${client.id}`} passHref>
+          <Link href={`/clients/${client?.id}`} passHref>
             <MuiLink underline="hover" color="inherit">
-              {client.data.attributes.name}
+              {client?.data.attributes.name}
             </MuiLink>
           </Link>
           <Typography color="text.primary">{title}</Typography>
