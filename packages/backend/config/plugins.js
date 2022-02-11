@@ -6,4 +6,4 @@ module.exports = ({ env }) => ({
       token: env('SLACK_TOKEN', ''),
     }
   }
-})
+});

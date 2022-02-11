@@ -40,13 +40,20 @@ export async function fetchAPI(path, urlParamsObject = {}, options = {}) {
 
   // Trigger API call
   const response = await fetch(requestUrl, mergedOptions);
-
+  let data;
   // Handle response
   if (!response.ok) {
-    console.error(response.statusText);
-    logger.error(`Failed to fetch`, requestUrl);
-    throw new Error(`An error occured please try again`);
+    try {
+      data = await response.json();
+    } catch (e) {
+      logger.error('fetchApi', `Failed to fetch`, requestUrl);
+      throw new Error(`An error occured please try again`);
+    }
+    const errorMessage =
+      data?.error?.message || `An error occured please try again`;
+    logger.error('fetchApi', `Failed to fetch`, requestUrl, errorMessage);
+    throw new Error(errorMessage);
   }
-  const data = await response.json();
+  data = await response.json();
   return data;
 }

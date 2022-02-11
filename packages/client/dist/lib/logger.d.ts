@@ -1,3 +1,4 @@
+import type { AxiosStatic } from 'axios';
 declare type MESSAGES = string[];
 declare type VitalsMetric = {
     id: string;
@@ -28,7 +29,7 @@ export declare class Logger {
     isDev: boolean;
     clientEnabled: boolean;
     submitEnabled: boolean;
-    fetchInstance: Fetch;
+    fetchInstance: Fetch | AxiosStatic;
     labelUrl: string;
     constructor(options: LOGGER_OPTIONS);
     private static print;

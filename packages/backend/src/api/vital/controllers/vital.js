@@ -10,7 +10,7 @@ module.exports = createCoreController('api::vital.vital', ({ strapi }) =>  ({
   async create(ctx) {
     const { data, app } = ctx.request.body;
     if (!app) {
-      return ctx.badRequest('app is missing!')
+      return ctx.badRequest('app is missing!');
     }
 
     const entry = await strapi.entityService.create('api::vital.vital', {
@@ -27,7 +27,8 @@ module.exports = createCoreController('api::vital.vital', ({ strapi }) =>  ({
     });
 
     if (ctx.request.headers['content-type'].startsWith('text/plain')) {
-      return { success: true };
+      ctx.response.status = 200;
+      ctx.response.body = null;
     } else {
       return { data: { id: entry.id }, meta: {}};
     }

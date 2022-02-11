@@ -1,3 +1,5 @@
+import type { AxiosStatic } from 'axios';
+
 type LOG_LEVEL = 'error' | 'warn' | 'info' | 'http' | 'verbose' | 'debug' | 'silly';
 type MESSAGES = string[];
 
@@ -34,7 +36,7 @@ export class Logger {
   isDev: boolean;
   clientEnabled: boolean;
   submitEnabled: boolean;
-  fetchInstance: Fetch;
+  fetchInstance: Fetch | AxiosStatic;
   labelUrl: string;
 
   constructor(options: LOGGER_OPTIONS) {
@@ -86,13 +88,21 @@ export class Logger {
           JSON.stringify({ data })
         );
       } else {
-        await this.fetchInstance(url, {
-          method: 'POST',
-          headers: {
-            'content-type': 'application/json',
-          },
-          body: JSON.stringify({ data }),
-        })
+        let isAxios = false;
+        if ("Axios" in this.fetchInstance) {
+          isAxios = !!this.fetchInstance.Axios;
+        }
+        if (isAxios && "post" in this.fetchInstance) {
+          await this.fetchInstance.post(url, { data });
+        } else {
+          await this.fetchInstance(url, {
+            method: 'POST',
+            headers: {
+              'content-type': 'application/json',
+            },
+            body: JSON.stringify({data}),
+          });
+        }
       }
     } catch (e) {
       if (this.isDev) Logger.print('error', 'doFetch', e);

@@ -15,8 +15,8 @@ const Nav = () => {
         }}
       >
         <li>
-          <Link href="/apps">
-            <a>Apps</a>
+          <Link href="/">
+            <a>Projects</a>
           </Link>
         </li>
       </Box>

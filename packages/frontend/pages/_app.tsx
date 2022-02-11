@@ -5,6 +5,9 @@ import { CacheProvider, EmotionCache } from '@emotion/react';
 import { AppProps } from 'next/app';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { DefaultSeo } from 'next-seo';
+import SEO from '../next-seo.config';
+import { SnackbarProvider } from 'notistack';
 
 import theme from '../styles/theme';
 import createEmotionCache from '../utils/createEmotionCache';
@@ -35,10 +38,13 @@ const MyApp = ({
   return (
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
+        <DefaultSeo {...SEO} />
         <CssBaseline />
-        <GlobalContext.Provider value={global.attributes}>
-          <Component {...pageProps} />
-        </GlobalContext.Provider>
+        <SnackbarProvider maxSnack={3}>
+          <GlobalContext.Provider value={global.attributes}>
+            <Component {...pageProps} />
+          </GlobalContext.Provider>
+        </SnackbarProvider>
       </ThemeProvider>
     </CacheProvider>
   );

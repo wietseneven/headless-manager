@@ -1,38 +1,44 @@
-import {
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  TextField,
-} from '@mui/material';
+import { Card, CardContent, CardHeader, TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { fetchAPI } from '../lib/api';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { JWT_COOKIE_KEY } from '../lib/constants';
+import { NextSeo } from 'next-seo';
+import { LoadingButton } from '@mui/lab';
+import { useSnackbar } from 'notistack';
 
 const LoginPage = () => {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { handleSubmit, register } = useForm();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleLogin = useCallback(
     async (data) => {
-      const response = await fetchAPI(
-        '/auth/local',
-        {},
-        {
-          method: 'POST',
-          headers: {
-            'content-type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        }
-      );
-      Cookies.set(JWT_COOKIE_KEY, response.jwt);
-      await router.push('/');
+      setLoading(true);
+      try {
+        const response = await fetchAPI(
+          '/auth/local',
+          {},
+          {
+            method: 'POST',
+            headers: {
+              'content-type': 'application/json',
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        Cookies.set(JWT_COOKIE_KEY, response.jwt);
+        await router.push('/');
+      } catch (e: any) {
+        const message = e?.message || 'Could not login';
+        enqueueSnackbar(message, { variant: 'error' });
+      }
+      setLoading(false);
     },
-    [router]
+    [router, enqueueSnackbar]
   );
 
   return (
@@ -40,6 +46,7 @@ const LoginPage = () => {
       variant="outlined"
       sx={{ maxWidth: 400, mt: 20, mx: 'auto', width: 1 }}
     >
+      <NextSeo title="Login" />
       <CardHeader title="Please login" />
       <CardContent
         component="form"
@@ -60,9 +67,9 @@ const LoginPage = () => {
           autoComplete="current-password"
           {...register('password', { required: true })}
         />
-        <Button variant="contained" type="submit">
+        <LoadingButton variant="contained" type="submit" loading={loading}>
           Login
-        </Button>
+        </LoadingButton>
       </CardContent>
     </Card>
   );

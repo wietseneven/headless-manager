@@ -30,6 +30,12 @@
       ],
       "@utils/*": [
         "./utils/*"
+      ],
+      "@strapi-types": [
+        "../../types/index.ts"
+      ],
+      "@lib/*": [
+        "./lib/*"
       ]
     },
     "incremental": true

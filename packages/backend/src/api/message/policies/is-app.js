@@ -18,7 +18,7 @@ module.exports = async (policyContext, config, { strapi }) => {
       console.info(e);
     }
   }
-  const appInBody = parsedData.app;
+  const appInBody = parsedData && parsedData.app;
   const appKey = appInHeader || appInBody;
   const ip = policyContext.request.ip;
   if (!appKey || !ip || !parsedData) return false;

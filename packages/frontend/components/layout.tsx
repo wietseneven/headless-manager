@@ -3,13 +3,16 @@ import { Box, Container, Typography } from '@mui/material';
 import { Theme } from '@mui/material/styles';
 import Link from 'next/link';
 import { ReactNode } from 'react';
+import { NextSeo } from 'next-seo';
 
 interface Props {
   children: ReactNode;
+  title: string;
 }
 
-const Layout = ({ children }: Props) => (
+const Layout = ({ title, children }: Props) => (
   <>
+    <NextSeo title={title} />
     <Box
       component="header"
       sx={{
