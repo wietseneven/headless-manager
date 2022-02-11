@@ -10,6 +10,7 @@ import { IApp } from '@strapi-types';
 import { GetStaticProps } from 'next';
 import AppMessages from '@components/views/AppMessages';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 interface App {
   id: string;
@@ -32,6 +33,14 @@ interface Props {
 }
 
 const Project = ({ app }: Props) => {
+  const router = useRouter();
+  if (router.isFallback) {
+    return (
+      <Layout title="Loading...">
+        <Container sx={{ pt: 6 }}>Loading app...</Container>
+      </Layout>
+    );
+  }
   const title = app.attributes?.name || 'App';
   const client = app.attributes?.client;
   return (
