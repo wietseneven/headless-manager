@@ -1,9 +1,13 @@
-import { Card, Table, TableBody, TableCell, TableRow } from '@mui/material';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { fetchAPI } from '@lib/api';
 import { IMessage } from '@strapi-types';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import {
+  DataGrid,
+  GridFilterModel,
+  GridColDef,
+  GridSortModel,
+} from '@mui/x-data-grid';
 
 interface Message {
   id: string;
@@ -29,13 +33,41 @@ interface Props {
   id: string;
 }
 
+const operatorValues = {
+  '>': '$gt',
+  '>=': '$gte',
+  '<': '$lt',
+  '<=': '$lte',
+  is: '$eq',
+  contains: '$contains',
+  isEmpty: '$null',
+  isNotEmpty: '$notNull',
+  isAnyOf: '$in',
+  startsWith: '$startsWith',
+  endWith: '$endsWith',
+};
+
+const columns: GridColDef[] = [
+  { field: 'level', headerName: 'Level', width: 100 },
+  { field: 'createdAt', headerName: 'Timestamp', width: 150 },
+  { field: 'label', headerName: 'Label', width: 150 },
+  { field: 'message', headerName: 'Message', width: 600 },
+];
+
 const AppMessages = ({ id }: Props) => {
+  const [sortModel, setSortModel] = useState<GridSortModel>([
+    { field: 'createdAt', sort: 'desc' },
+  ]);
+  const [page, setPage] = useState<number>(0);
+  const [filterModel, setFilterModel] = useState<GridFilterModel>({
+    items: [],
+  });
   const [messages, setMessages] = useState<MessagesResponse>({
     loading: true,
     data: [],
     meta: {
       pagination: {
-        page: 0,
+        page: 1,
         pageCount: 0,
         pageSize: 100,
         total: 0,
@@ -44,11 +76,31 @@ const AppMessages = ({ id }: Props) => {
   });
 
   const fetchData = async () => {
+    setMessages((prevState) => ({ ...prevState, loading: true }));
+    const sortArr = sortModel.map((model) => `${model.field}:${model.sort}`);
+
+    const filters = filterModel.items.reduce(
+      (acc, filter) => {
+        // @ts-ignore
+        const operator = operatorValues[filter.operatorValue];
+        if (!operator) {
+          throw new Error(`Unknown operatorValue: ${filter.operatorValue}!`);
+        }
+        return {
+          ...acc,
+          [filter.columnField]: {
+            [operator]: filter.value ? filter.value : true,
+          },
+        };
+      },
+      { app: id }
+    );
+
     const response = await fetchAPI('/messages', {
-      filters: { app: id },
-      sort: ['createdAt:desc'],
+      filters,
+      sort: sortArr,
       pagination: {
-        page: messages.meta.pagination.page + 1,
+        page: page || messages.meta.pagination.page,
         pageSize: messages.meta.pagination.pageSize,
       },
     });
@@ -56,80 +108,42 @@ const AppMessages = ({ id }: Props) => {
     setMessages((prevState) => ({
       loading: false,
       ...response,
-      data: [...prevState.data, ...response.data],
+      data: response.data.map((message: Message) => ({
+        id: message.id,
+        createdAt: format(
+          new Date(message.attributes.createdAt),
+          'dd-MM-yy kk:mm:ss'
+        ),
+        level: message.attributes.level,
+        label: message.attributes.label,
+        message: message.attributes.message,
+      })),
     }));
   };
 
   useEffect(() => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [page, sortModel, filterModel]);
 
   return (
-    <Card
-      variant="outlined"
-      sx={{
-        overflow: 'auto',
-        background: 'black',
-        maxHeight: '80vh',
-        fontFamily: 'Menlo, monospace',
-      }}
-    >
-      <InfiniteScroll
-        dataLength={messages.data.length}
-        next={fetchData}
-        style={{ display: 'flex', flexDirection: 'column' }} // To put endMessage and loader to the top.
-        hasMore={
-          messages.meta.pagination.page < messages.meta.pagination.pageCount
-        }
-        loader={<h4>Loading...</h4>}
-      >
-        <Table size="small" padding="none">
-          <TableBody>
-            {messages.data.map((message) => (
-              <TableRow key={message.id}>
-                <TableCell sx={{ paddingRight: 0 }}>
-                  {message.attributes.level}
-                </TableCell>
-                <TableCell
-                  sx={{
-                    paddingRight: 0,
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {format(
-                    new Date(message.attributes.createdAt),
-                    'dd-MM-yy kk:mm:ss'
-                  )}
-                </TableCell>
-                <TableCell sx={{ paddingRight: 0 }}>
-                  {message.attributes.label}
-                </TableCell>
-                <TableCell sx={{ paddingRight: 0, width: '100%' }}>
-                  {message.attributes.message}
-                </TableCell>
-              </TableRow>
-            ))}
-            {!messages.loading && !messages.data.length && (
-              <TableRow>
-                <TableCell
-                  sx={{
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {format(new Date(), 'dd-MM-yy kk:mm:ss')}
-                </TableCell>
-                <TableCell
-                  sx={{ fontFamily: 'Menlo, monospace', width: '100%' }}
-                >
-                  There are no messages yet...
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </InfiniteScroll>
-    </Card>
+    <div style={{ backgroundColor: '#000', height: '80vh', width: '100%' }}>
+      <DataGrid
+        rows={messages.data}
+        columns={columns}
+        paginationMode="server"
+        rowCount={messages.meta.pagination.total}
+        page={page}
+        loading={messages.loading}
+        onPageChange={setPage}
+        filterMode="server"
+        onFilterModelChange={setFilterModel}
+        filterModel={filterModel}
+        sortingMode="server"
+        sortModel={sortModel}
+        onSortModelChange={setSortModel}
+      />
+    </div>
   );
 };
 
