@@ -34,7 +34,7 @@
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::app.app",
-      "inversedBy": "messages"
+      "qa ": "messages"
     },
     "ip": {
       "type": "string"
