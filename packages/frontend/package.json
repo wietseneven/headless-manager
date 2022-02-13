@@ -32,6 +32,7 @@
     "react-dom": "17.0.2",
     "react-hook-form": "^7.26.1",
     "react-infinite-scroll-component": "^6.1.0",
+    "slugify": "^1.6.5",
     "strapi-to-typescript": "https://github.com/timohofmeijer/strapi-to-typescript#strapi-4-support"
   },
   "license": "MIT",

@@ -50,10 +50,10 @@ const Project = ({ app }: Props) => {
         <Breadcrumbs sx={{ mb: 1 }} aria-label="breadcrumb">
           <Link href="/" passHref>
             <MuiLink underline="hover" color="inherit">
-              Projects
+              Apps
             </MuiLink>
           </Link>
-          <Link href={`/clients/${client?.id}`} passHref>
+          <Link href={`/#client-${client?.id}`} passHref>
             <MuiLink underline="hover" color="inherit">
               {client?.data.attributes.name}
             </MuiLink>
