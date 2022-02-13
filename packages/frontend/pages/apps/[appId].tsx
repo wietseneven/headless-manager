@@ -55,7 +55,7 @@ const Project = ({ app }: Props) => {
           </Link>
           <Link href={`/#client-${client?.id}`} passHref>
             <MuiLink underline="hover" color="inherit">
-              {client?.data.attributes.name}
+              {client?.data?.attributes?.name}
             </MuiLink>
           </Link>
           <Typography color="text.primary">{title}</Typography>
