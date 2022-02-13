@@ -38,7 +38,7 @@ const AppCard = ({ id, app }: Props) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Link href={`/projects/${id}`} passHref>
+        <Link href={`/apps/${id}`} passHref>
           <Button
             component="a"
             sx={[
